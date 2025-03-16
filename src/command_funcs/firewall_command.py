@@ -3,6 +3,7 @@ from colorama import Fore, Style
 import player
 import random
 import time
+from tutorial import tutorial_active
 
 def execute_firewall_scan():
     """Scan the current server's firewall"""
@@ -33,6 +34,13 @@ def execute_firewall_bypass():
         print(f"{Fore.RED}❌ Not connected to any server.{Style.RESET_ALL}")
         return
 
+    # Always succeed if tutorial not completed
+    if not player.player_data.get("tutorial_complete", False):
+        print(f"{Fore.GREEN}✓ Firewall successfully bypassed!{Style.RESET_ALL}")
+        server["firewall"]["enabled"] = False
+        player.gain_xp(25)
+        return
+
     firewall = server.get("firewall", {})
     if not firewall.get("enabled", False):
         print(f"{Fore.GREEN}✓ No firewall detected on this server.{Style.RESET_ALL}")
@@ -46,6 +54,14 @@ def execute_firewall_bypass():
         base_chance += 30
         print(f"{Fore.CYAN}[+] Firewall Buster tool activated{Style.RESET_ALL}")
 
+    if tutorial_active:
+        # Always succeed in tutorial
+        print(f"{Fore.GREEN}✓ Firewall successfully bypassed!{Style.RESET_ALL}")
+        server["firewall"]["enabled"] = False
+        player.gain_xp(25)
+        return
+
+    # Rest of normal bypass logic
     print(f"\n{Fore.CYAN}🔓 Attempting firewall bypass...{Style.RESET_ALL}")
     time.sleep(2)
 

@@ -2,7 +2,6 @@ import time
 from colorama import Fore, Style
 import random
 import player
-from trace_system import trace_system
 
 def list_sensitive_data(server):
     """List available sensitive data on the server"""
@@ -29,17 +28,11 @@ def steal_data(server, filename):
     data = sensitive_data[filename]
     print(f"\n{Fore.CYAN}[*] Attempting to exfiltrate {filename}...{Style.RESET_ALL}")
     
-    # Start trace timer
-    trace_system.start_trace()
-    
     # Simulate data transfer
     chunks = random.randint(3, 8)
     for i in range(chunks):
         time.sleep(random.uniform(1, 3))
         print(f"{Fore.CYAN}[*] Transferring chunk {i+1}/{chunks}...{Style.RESET_ALL}")
-
-    # Stop trace timer
-    trace_system.stop_trace()
 
     # Award money and remove the data
     reward = data["value"]

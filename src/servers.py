@@ -119,7 +119,9 @@ def scan_ports(server):
     
     result = "\nOpen ports:\n"
     for port, service in ports.items():
-        result += f"PORT {port}/tcp - {service['name']} {service.get('version', '')}\n"
+        service_name = service.get('name', 'Unknown')
+        service_version = service.get('version', '')
+        result += f"PORT {port}/tcp - {service_name} {service_version}\n"
     return result
 
 def enumerate_services(server):

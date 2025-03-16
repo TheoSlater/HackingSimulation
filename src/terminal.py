@@ -1,7 +1,12 @@
 import readline
-from commands import execute_command
+from command_executor import execute_command_with_output
 from colorama import Fore, Style
+import player
 import servers
+from malware import update_all_servers_malware
+import time
+from tutorial import run_tutorial
+from commands import COMMANDS, SUDO_COMMANDS, SPECIAL_COMMANDS
 
 history = []
 
@@ -31,20 +36,27 @@ def get_prompt():
 
 def fake_terminal():
     print(f"{Fore.CYAN}Welcome to HackingSim Terminal{Style.RESET_ALL}")
+    
+    # Check if tutorial needs to be run
+    if not player.player_data.get("tutorial_complete", False):
+        run_tutorial()
+    
     print(f"{Fore.YELLOW}Type 'help' for available commands{Style.RESET_ALL}")
+    
+    last_malware_check = time.time()
     
     while True:
         try:
+            # Check malware income every minute
+            if time.time() - last_malware_check >= 60:
+                update_all_servers_malware(servers.servers)
+                last_malware_check = time.time()
+
             command = input(get_prompt()).strip().lower()
             
             if command:
                 history_completer.add_history(command)
-
-            if command == "exit":
-                print(f"{Fore.YELLOW}Goodbye!{Style.RESET_ALL}")
-                break
-
-            execute_command(command)
+                execute_command_with_output(command, COMMANDS, SUDO_COMMANDS, SPECIAL_COMMANDS)
 
         except KeyboardInterrupt:
             print("\nExiting...")

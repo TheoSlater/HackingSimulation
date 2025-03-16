@@ -1,4 +1,5 @@
 from command_funcs.data_commands import execute_exfiltrate_command
+from command_funcs.malware_commands import execute_malware_deploy, execute_malware_list, execute_malware_status
 from command_funcs.server_commands import execute_crack_ssh_command
 import player
 from colorama import Fore, Style
@@ -35,13 +36,17 @@ COMMANDS = {
     "firewall-bypass": (execute_firewall_bypass, None),
     "balance": (execute_balance_command, None),
     "exfiltrate": (execute_exfiltrate_command, "<filename>"),
+    "malware": (execute_malware_list, None),
+    "malware-status": (execute_malware_status, None),
+    "malware-deploy": (execute_malware_deploy, "<type>"),
+    "hack": (execute_hack_command, None),  # Move hack command to regular commands
 }
 
 SUDO_COMMANDS = {
     "brute-force": execute_brute_force_command,
     "exploit": execute_exploit_command,
-    "hack": execute_hack_command,
     "crack-ssh": execute_crack_ssh_command
+    # Removed hack from here since it's now a regular command
 }
 
 SPECIAL_COMMANDS = {
@@ -83,41 +88,3 @@ def handle_sudo_command(parts):
     else:
         print(f"{Fore.RED}Unknown sudo command: {sudo_cmd}{Style.RESET_ALL}")
     return True
-
-def execute_command(command):
-    """Main command execution function"""
-    if not command:
-        return
-
-    parts = command.split(" ", 1)
-    cmd = parts[0].lower()
-
-    # Handle special commands first
-    if handle_special_command(cmd):
-        return
-
-    # Handle sudo commands
-    if cmd == "sudo":
-        handle_sudo_command(parts)
-        return
-
-    # Handle regular commands
-    if cmd not in COMMANDS:
-        print(f"{Fore.RED}Unknown command. Type 'help' for a list of commands.{Style.RESET_ALL}")
-        return
-
-    func, usage = COMMANDS[cmd]
-    
-    # Check if command requires arguments
-    if usage and len(parts) < 2:
-        print_usage(cmd, usage)
-        return
-
-    # Execute command with error handling
-    try:
-        if usage:
-            func(parts[1])
-        else:
-            func()
-    except Exception as e:
-        print(f"{Fore.RED}Error executing command: {str(e)}{Style.RESET_ALL}")

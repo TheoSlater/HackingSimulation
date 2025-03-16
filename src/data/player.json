@@ -1,8 +1,7 @@
 {
-    "money": 1000000013000,
-    "tools": [
-        "ssh_cracker"
-    ],
-    "xp": 1095,
-    "wanted_level": 0
+  "money": 5474,
+  "tools": ["ssh_cracker"],
+  "xp": 1685,
+  "wanted_level": 0,
+  "tutorial_complete": true
 }

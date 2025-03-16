@@ -18,6 +18,10 @@ COMMANDS = {
     "firewall-scan": "Scan the current server's firewall",
     "firewall-bypass": "Attempt to bypass the server's firewall",
     "exit": "Quit the game.",
+    "malware": "List available malware types",
+    "malware-status": "Check deployed malware status",
+    "malware-deploy <type>": "Deploy malware to current server",
+    "steal-cc": "Steal and sell credit card data from the server",
 }
 
 def execute_help_command():

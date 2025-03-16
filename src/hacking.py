@@ -3,7 +3,7 @@ import random
 from colorama import Fore, Style
 import player
 from servers import get_current_server, disconnect
-from trace_system import trace_system as ts  # Fix import
+from tutorial import tutorial_active
 
 def check_firewall(server):
     """Check if server has an active firewall"""
@@ -28,9 +28,6 @@ def brute_force_attack(server):
     if server.get("auth_type") == "ssh_key":
         print(f"{Fore.RED}❌ Cannot brute force SSH key authentication!{Style.RESET_ALL}")
         return
-
-    # Start trace timer
-    ts.start_trace()
 
     password = server["password"]
     detection_chance = 0
@@ -76,9 +73,6 @@ def brute_force_attack(server):
     server["root_access"] = True  # Grant root access
     player.gain_xp(20)
 
-    # Stop trace timer on success
-    ts.stop_trace()
-
 def crack_ssh_key(server):
     """Attempt to crack SSH key encryption"""
     if not player.has_tool("ssh_cracker"):
@@ -91,7 +85,6 @@ def crack_ssh_key(server):
     success_rate = max(30, base_success_rate - (security_level * 5))  # Security reduces success rate
 
     print(f"\n{Fore.CYAN}[*] Attempting to crack SSH key...{Style.RESET_ALL}")
-    ts.start_trace()
 
     steps = [
         ("Analyzing encryption type", 1, 2),
@@ -107,8 +100,10 @@ def crack_ssh_key(server):
         if random.random() < 0.2:  # 20% chance of showing additional info
             print(f"{Fore.CYAN}[+] Found potential {random.choice(['RSA modulus', 'prime factor', 'key fragment', 'encryption pattern'])}{Style.RESET_ALL}")
     
-    success = random.randint(1, 100) <= success_rate  # Use new success rate
-    ts.stop_trace()
+    if tutorial_active:
+        success = True  # Always succeed in tutorial
+    else:
+        success = random.randint(1, 100) <= success_rate
     
     if success:
         key_data = server["ssh_key"]
@@ -126,6 +121,13 @@ def crack_ssh_key(server):
 def exploit_service(server, port):
     """Attempt to exploit a specific service port"""
     if check_root_access(server) or check_firewall(server):
+        return
+
+    # Always succeed if tutorial not completed
+    if not player.player_data.get("tutorial_complete", False):
+        print(f"{Fore.GREEN}[+] Successfully exploited server!{Style.RESET_ALL}")
+        server["root_access"] = True
+        player.gain_xp(50)
         return
 
     ports = server.get("ports", {})
@@ -146,6 +148,12 @@ def exploit_service(server, port):
     for vuln in vulnerabilities:
         print(f"{Fore.YELLOW}[*] Trying exploit for {vuln['cve']}{Style.RESET_ALL}")
         time.sleep(1)
+
+        if tutorial_active:
+            print(f"{Fore.GREEN}[+] Successfully exploited {vulnerabilities[0]['cve']}!{Style.RESET_ALL}")
+            server["root_access"] = True
+            player.gain_xp(50)
+            return
 
         if random.randint(1, 100) <= 70:  # 70% success rate for known vulnerabilities
             print(f"{Fore.GREEN}[+] Successfully exploited {vuln['cve']}!{Style.RESET_ALL}")

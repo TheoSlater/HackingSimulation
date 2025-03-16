@@ -1,6 +1,8 @@
+import player
 from servers import get_current_server
 from colorama import Fore, Style
 from hacking import check_firewall, brute_force_attack, exploit_service, exploit_server, crack_ssh_key
+from tutorial import tutorial_active
 
 def execute_brute_force_command():
     server = get_current_server()
@@ -16,6 +18,14 @@ def execute_exploit_command(port=None):
         print(f"{Fore.RED}❌ Not connected to any server!{Style.RESET_ALL}")
         return
 
+    if tutorial_active:
+        # Always succeed during tutorial
+        print(f"{Fore.GREEN}[+] Successfully exploited server!{Style.RESET_ALL}")
+        server["root_access"] = True
+        player.gain_xp(50)
+        return
+
+    # Normal exploit logic
     if port:
         exploit_service(server, str(port))
     else:
