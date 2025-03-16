@@ -3,12 +3,10 @@ from colorama import Fore, Style
 import player
 from command_executor import execute_command_with_output
 
-# Add global tutorial flag
 tutorial_active = False
 
 def run_tutorial():
-    """Run the interactive tutorial"""
-    from commands import COMMANDS, SUDO_COMMANDS, SPECIAL_COMMANDS  # Import here to avoid circular import
+    from commands import COMMANDS, SUDO_COMMANDS, SPECIAL_COMMANDS 
     global tutorial_active
     tutorial_active = True
     print(f"\n{Fore.CYAN}=== Welcome to HackingSim Tutorial ==={Style.RESET_ALL}")
@@ -25,8 +23,8 @@ def run_tutorial():
         ("Check for vulnerabilities on these ports.", "scan-analyse 4"),
         ("Let's try to exploit one of the open ports.", "sudo exploit 80"),
         ("Now that we have access, let's steal some money.", "hack"),
-        ("Now, let's look for sensitive data.", "exfiltrate list"),
-        ("Finally, let's steal some sensitive data.", "exfiltrate customer_records.csv")
+        ("Now, lets look for sensitive data.", "exfiltrate list"),
+        ("Finally, let's steal some sensitivesdv data.", "exfiltrate customer_records.csv")
     ]
 
     for instruction, command in steps:
@@ -37,7 +35,6 @@ def run_tutorial():
         # Execute the actual command using new executor
         execute_command_with_output(user_input, COMMANDS, SUDO_COMMANDS, SPECIAL_COMMANDS)
         
-        # Small delay before next instruction
         time.sleep(1)
 
     tutorial_active = False

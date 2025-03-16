@@ -1,5 +1,6 @@
 from command_funcs.data_commands import execute_exfiltrate_command
 from command_funcs.malware_commands import execute_malware_deploy, execute_malware_list, execute_malware_status
+from command_funcs.script_commands import execute_run_script_command, execute_touch_command
 from command_funcs.server_commands import execute_crack_ssh_command
 import player
 from colorama import Fore, Style
@@ -40,6 +41,8 @@ COMMANDS = {
     "malware-status": (execute_malware_status, None),
     "malware-deploy": (execute_malware_deploy, "<type>"),
     "hack": (execute_hack_command, None),  # Move hack command to regular commands
+    "touch": (execute_touch_command, "<filename>"),
+    "run": (execute_run_script_command, "<filename>"),
 }
 
 SUDO_COMMANDS = {

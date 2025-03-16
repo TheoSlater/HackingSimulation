@@ -22,8 +22,6 @@ def execute_hack_command():
 
     print(f"\n{Fore.BLUE}[+] Attempting to hack {server['name']} bank account...{Style.RESET_ALL}")
     time.sleep(2)
-
-    # Calculate amount to steal (between $50-$150)
     max_steal = min(150, server["money"])
     stolen_amount = max_steal if tutorial_active else random.randint(50, max_steal)
     
@@ -38,7 +36,7 @@ def execute_hack_command():
         return
 
     # Normal hack logic for non-tutorial
-    if random.randint(1, 100) <= 70:  # 70% success rate
+    if random.randint(1, 100) <= 70: 
         player.add_money(stolen_amount)
         server["money"] -= stolen_amount
         print(f"{Fore.GREEN}💰 Success! Stole ${stolen_amount} from {server['name']}.{Style.RESET_ALL}")

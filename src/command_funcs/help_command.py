@@ -22,6 +22,8 @@ COMMANDS = {
     "malware-status": "Check deployed malware status",
     "malware-deploy <type>": "Deploy malware to current server",
     "steal-cc": "Steal and sell credit card data from the server",
+    "touch <filename>": "Create a new custom script/virus",
+    "run <filename>": "Run a custom script on the current server",
 }
 
 def execute_help_command():

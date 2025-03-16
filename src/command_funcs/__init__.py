@@ -13,3 +13,4 @@ from .firewall_command import execute_firewall_scan, execute_firewall_bypass
 from .balance_command import execute_balance_command
 from .data_commands import execute_exfiltrate_command
 from .malware_commands import execute_malware_list, execute_malware_status, execute_malware_deploy
+from .credit_card_fraud import steal_card_details
