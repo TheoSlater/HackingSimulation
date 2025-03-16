@@ -1,7 +1,5 @@
 {
-    "money": 0,
-    "tools": [
-        "faster_bruteforce"
-    ],
-    "xp": 80
+  "money": 0,
+  "tools": ["faster_bruteforce"],
+  "xp": 0
 }

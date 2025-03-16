@@ -3,6 +3,7 @@
     "name": "AlphaNet",
     "security": 2,
     "password": "admin123",
+    "money": 5000,
     "files": {
       "report.txt": "Confidential report on system vulnerabilities.",
       "admin_creds.txt": "Username: admin\nPassword: 1234",
@@ -13,6 +14,7 @@
     "name": "BetaCorp",
     "security": 3,
     "password": "securepass",
+    "money": 12000,
     "files": {
       "customer_data.db": "Encrypted database of customers.",
       "secret_key.pem": "PRIVATE KEY - DO NOT SHARE"

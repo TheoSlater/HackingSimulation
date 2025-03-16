@@ -1,104 +1,106 @@
-from servers import list_servers, connect_to_server, disconnect, get_current_server
-from hacking import brute_force_attack, exploit_server
-from hacking_tools import list_tools, purchase_tool
 import player
+from colorama import Fore, Style
+from command_funcs import (
+    execute_help_command,
+    execute_scan_command,
+    execute_connect_command,
+    execute_disconnect_command,
+    execute_brute_force_command,
+    execute_exploit_command,
+    execute_ls_command,
+    execute_open_command,
+    execute_tools_command,
+    execute_buy_command,
+    execute_hack_command
+)
 
+# Command definitions with their usage patterns
 COMMANDS = {
-    "help": "Show available commands.",
-    "scan-analyse <level>": "Scan for servers (1 = basic, 2 = detailed).",
-    "connect <server_name/ip>": "Connect to a server.",
-    "disconnect": "Disconnect from the current server.",
-    "sudo brute-force": "Attempt to hack the current server.",
-    "sudo exploit": "Try to find a backdoor exploit.",
-    "ls": "List files on the hacked server.",
-    "open <filename>": "View the contents of a file.",
-    "tools": "View available hacking tools.",
-    "buy <tool_name>": "Buy a hacking tool.",
-    "balance": "Check money balance.",
-    "exit": "Quit the game."
+    "help": (execute_help_command, None),
+    "scan-analyse": (execute_scan_command, "<level>"),
+    "connect": (execute_connect_command, "<server_name/ip>"),
+    "disconnect": (execute_disconnect_command, None),
+    "ls": (execute_ls_command, None),
+    "open": (execute_open_command, "<filename>"),
+    "tools": (execute_tools_command, None),
+    "buy": (execute_buy_command, "<tool_name>"),
 }
 
-def execute_command(command):
-    parts = command.split(" ", 1)
-    cmd = parts[0]
+SUDO_COMMANDS = {
+    "brute-force": execute_brute_force_command,
+    "exploit": execute_exploit_command,
+    "hack": execute_hack_command
+}
 
-    if cmd == "help":
-        print("\nAvailable commands:")
-        for cmd, desc in COMMANDS.items():
-            print(f"- {cmd}: {desc}")
+SPECIAL_COMMANDS = {
+    "exit": lambda: (print(f"{Fore.YELLOW}Goodbye!{Style.RESET_ALL}"), exit()),
+    "balance": lambda: print(f"{Fore.GREEN}💰 Balance: ${player.get_balance()}{Style.RESET_ALL}")
+}
 
-    elif cmd == "scan-analyse":
-        if len(parts) < 2 or not parts[1].isdigit():
-            print("Usage: scan-analyse <level> (1 or 2)")
-            return
-        list_servers(int(parts[1]))
-
-    elif cmd == "connect":
-        if len(parts) < 2:
-            print("Usage: connect <server_name/ip>")
-            return
-        connect_to_server(parts[1])
-
-    elif cmd == "disconnect":
-        disconnect()
-
-    elif cmd == "sudo":
-        if len(parts) < 2:
-            print("Usage: sudo <command>")
-            return
-        if parts[1] == "brute-force":
-            brute_force_attack()
-        elif parts[1] == "exploit":
-            exploit_server()
-        else:
-            print(f"Unknown sudo command: {parts[1]}")
-
-    elif cmd == "ls":
-        server = get_current_server()
-        if server:
-            if server.get("root_access", False):  # Check if root access is granted
-                print("\n📂 Files on the server:")
-                for file in server.get("files", {}):
-                    print(f"- {file}")
-            else:
-                print("❌ Access Denied. You need root access to list files.")
-        else:
-            print("❌ Not connected to a server.")
-
-    elif cmd == "open":
-        if len(parts) < 2:
-            print("Usage: open <filename>")
-            return
-
-        server = get_current_server()
-        if server:
-            if server.get("root_access", False):  # Check if root access is granted
-                filename = parts[1]
-                if filename in server.get("files", {}):
-                    print(f"\n📄 Contents of {filename}:")
-                    print(server["files"][filename])
-                else:
-                    print(f"❌ File '{filename}' not found on this server.")
-            else:
-                print("❌ Access Denied. You need root access to open files.")
-        else:
-            print("❌ Not connected to a server.")
-
-    elif cmd == "tools":
-        list_tools()
-
-    elif cmd == "buy":
-        if len(parts) < 2:
-            print("Usage: buy <tool_name>")
-            return
-        purchase_tool(parts[1])
-
-    elif cmd == "balance":
-        print(f"💰 Balance: ${player.get_balance()}")
-
-    elif cmd == "exit":
-        print("Goodbye!")
-        exit()
-
+def print_usage(command, usage=None):
+    """Print command usage with color formatting"""
+    if usage:
+        print(f"{Fore.YELLOW}Usage: {command} {usage}{Style.RESET_ALL}")
     else:
-        print("Unknown command. Type 'help' for a list of commands.")
+        print(f"{Fore.YELLOW}Usage: {command}{Style.RESET_ALL}")
+
+def handle_special_command(cmd):
+    """Handle special commands like exit and balance"""
+    if cmd in SPECIAL_COMMANDS:
+        SPECIAL_COMMANDS[cmd]()
+        return True
+    return False
+
+def handle_sudo_command(parts):
+    """Handle sudo commands with proper error checking"""
+    if len(parts) < 2:
+        print_usage("sudo", "<command>")
+        return True
+
+    sudo_cmd = parts[1]
+    if sudo_cmd in SUDO_COMMANDS:
+        try:
+            SUDO_COMMANDS[sudo_cmd]()
+        except Exception as e:
+            print(f"{Fore.RED}Error executing sudo command: {str(e)}{Style.RESET_ALL}")
+    else:
+        print(f"{Fore.RED}Unknown sudo command: {sudo_cmd}{Style.RESET_ALL}")
+    return True
+
+def execute_command(command):
+    """Main command execution function"""
+    if not command:
+        return
+
+    parts = command.split(" ", 1)
+    cmd = parts[0].lower()
+
+    # Handle special commands first
+    if handle_special_command(cmd):
+        return
+
+    # Handle sudo commands
+    if cmd == "sudo":
+        handle_sudo_command(parts)
+        return
+
+    # Handle regular commands
+    if cmd not in COMMANDS:
+        print(f"{Fore.RED}Unknown command. Type 'help' for a list of commands.{Style.RESET_ALL}")
+        return
+
+    func, usage = COMMANDS[cmd]
+    
+    # Check if command requires arguments
+    if usage and len(parts) < 2:
+        print_usage(cmd, usage)
+        return
+
+    # Execute command with error handling
+    try:
+        if usage:
+            func(parts[1])
+        else:
+            func()
+    except Exception as e:
+        print(f"{Fore.RED}Error executing command: {str(e)}{Style.RESET_ALL}")

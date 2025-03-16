@@ -4,7 +4,7 @@ from servers import get_current_server, disconnect
 import player
 
 def brute_force_attack():
-    """ Simulates a brute-force attack with detection risks, affected by tools. """
+    """Simulates a brute-force attack with increased detection risks, affected by tools."""
     server = get_current_server()
     if not server:
         print("❌ You're not connected to any server!")
@@ -32,7 +32,8 @@ def brute_force_attack():
         while not found:
             for attempt in random.sample(charset, len(charset)):
                 attempts += 1
-                detection_chance += 0.2 * (security_level / 100)
+                # Increased detection risk
+                detection_chance += 0.3 * (security_level / 100)
                 
                 print(f"[*] Trying: {guessed_password + attempt}", end="\r", flush=True)
                 time.sleep(random.uniform(0.01, brute_force_speed))
@@ -58,7 +59,7 @@ def brute_force_attack():
     player.gain_xp(20)
 
 def exploit_server():
-    """ Exploit attempt, with instant success if 'auto_exploit' tool is owned. """
+    """Exploit attempt with a lowered success chance unless 'auto_exploit' tool is owned."""
     server = get_current_server()
     if not server:
         print("❌ You're not connected to any server!")
@@ -77,7 +78,8 @@ def exploit_server():
         player.gain_xp(50)
         return
 
-    exploit_chance = 50  
+    # Lower exploit chance to make it slightly harder
+    exploit_chance = 40  
     if random.randint(1, 100) <= exploit_chance:
         print(f"[+] Exploit found! Root access granted to {server.get('name', 'Unknown')} ({server.get('ip', 'Unknown IP')})")
         server["root_access"] = True  # Grant root access
