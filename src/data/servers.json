@@ -1,5 +1,5 @@
 {
-  "192.168.1.10": {
+  "10.0.14.52": {
     "name": "AlphaNet",
     "security": 2,
     "password": "admin123",
@@ -27,7 +27,7 @@
       }
     }
   },
-  "192.168.1.20": {
+  "172.16.8.120": {
     "name": "BetaCorp",
     "security": 3,
     "password": "securepass",
@@ -47,6 +47,154 @@
       "trade_secrets.doc": {
         "description": "Corporate trade secrets",
         "value": 8000
+      }
+    }
+  },
+  "192.168.1.30": {
+    "name": "SecureBank",
+    "security": 8,
+    "password": "P@ssw0rd123!",
+    "money": 50000,
+    "ports": {},
+    "files": {
+      "transactions.db": "Encrypted banking transactions database",
+      "accounts.dat": "Customer account information",
+      "security_policy.txt": "Internal security protocols and procedures"
+    },
+    "firewall": {
+      "enabled": true,
+      "strength": 8,
+      "attempts": 0
+    },
+    "auth_type": "ssh_key",
+    "sensitive_data": {
+      "bank_accounts.csv": {
+        "description": "International bank account numbers and routing data",
+        "value": 15000
+      },
+      "credit_cards.enc": {
+        "description": "Encrypted credit card database",
+        "value": 12000
+      }
+    }
+  },
+  "10.10.55.80": {
+    "name": "GameDevCorp",
+    "security": 4,
+    "password": "gamedev2024",
+    "money": 8000,
+    "ports": {},
+    "files": {
+      "game_source.zip": "Unreleased game source code",
+      "assets.tar": "Game artwork and assets",
+      "debug.log": "Development server logs"
+    },
+    "firewall": {
+      "enabled": true,
+      "strength": 4,
+      "attempts": 0
+    },
+    "auth_type": "password",
+    "sensitive_data": {
+      "unreleased_game.zip": {
+        "description": "Pre-release game build",
+        "value": 6000
+      }
+    }
+  },
+  "172.20.15.200": {
+    "name": "CryptoCorp",
+    "security": 7,
+    "password": "blockchain4life",
+    "money": 25000,
+    "ports": {},
+    "files": {
+      "wallet.dat": "Cryptocurrency wallet data",
+      "blockchain.db": "Local blockchain copy",
+      "mining_stats.log": "Mining operation statistics"
+    },
+    "firewall": {
+      "enabled": true,
+      "strength": 6,
+      "attempts": 0
+    },
+    "auth_type": "ssh_key",
+    "sensitive_data": {
+      "private_keys.enc": {
+        "description": "Encrypted cryptocurrency wallet keys",
+        "value": 20000
+      }
+    }
+  },
+  "45.33.32.156": {
+    "name": "MediaServer",
+    "security": 3,
+    "password": "streaming123",
+    "money": 3000,
+    "ports": {},
+    "files": {
+      "movies.idx": "Movie streaming index",
+      "users.db": "User subscription data",
+      "content.log": "Content delivery logs"
+    },
+    "firewall": {
+      "enabled": false,
+      "strength": 3,
+      "attempts": 0
+    },
+    "auth_type": "password",
+    "sensitive_data": {
+      "user_payment.csv": {
+        "description": "User payment and subscription details",
+        "value": 4000
+      }
+    }
+  },
+  "98.76.54.32": {
+    "name": "CloudHost",
+    "security": 5,
+    "password": "cloud2024!",
+    "money": 15000,
+    "ports": {},
+    "files": {
+      "client_backups.tar": "Archived client data backups",
+      "system.cfg": "System configuration files",
+      "access.log": "Access logs for cloud services"
+    },
+    "firewall": {
+      "enabled": true,
+      "strength": 5,
+      "attempts": 0
+    },
+    "auth_type": "password",
+    "sensitive_data": {
+      "aws_credentials.json": {
+        "description": "Cloud service provider credentials",
+        "value": 10000
+      }
+    }
+  },
+  "209.88.198.133": {
+    "name": "DataCenter",
+    "security": 6,
+    "password": "dc@admin2024",
+    "money": 20000,
+    "ports": {},
+    "files": {
+      "network.cfg": "Network configuration files",
+      "backup.db": "Backup database",
+      "routing.conf": "Routing configuration"
+    },
+    "firewall": {
+      "enabled": true,
+      "strength": 7,
+      "attempts": 0
+    },
+    "auth_type": "ssh_key",
+    "sensitive_data": {
+      "customer_database.sql": {
+        "description": "Enterprise customer database dump",
+        "value": 18000
       }
     }
   }

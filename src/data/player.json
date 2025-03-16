@@ -1,9 +1,10 @@
 {
-    "money": 261,
+    "money": 3288,
     "tools": [
-        "ssh_cracker"
+        "faster_bruteforce",
+        "stealth_mode"
     ],
-    "xp": 2280,
+    "xp": 85,
     "wanted_level": 0,
     "tutorial_complete": true
 }

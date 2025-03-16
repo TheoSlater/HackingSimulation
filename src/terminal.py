@@ -31,7 +31,7 @@ def get_prompt():
     if servers.current_server:
         server_name = servers.current_server['name']
         server_ip = servers.current_server['ip']
-        return f"{Fore.GREEN}hacker@{server_name}({server_ip}){Style.RESET_ALL}> "
+        return f"{Fore.GREEN}hacker@{server_name}{Style.RESET_ALL}> "
     return f"{Fore.GREEN}hacker@terminal{Style.RESET_ALL}> "
 
 def fake_terminal():

@@ -4,6 +4,7 @@ from servers import get_current_server
 import player
 from colorama import Fore, Style
 from tutorial import tutorial_active
+from random_events import RandomEvent
 
 def execute_hack_command():
     """Hack a server to steal its money if the player has root access."""
@@ -18,6 +19,10 @@ def execute_hack_command():
 
     if "money" not in server or server["money"] <= 0:
         print(f"{Fore.YELLOW}💸 This server has no money to steal.{Style.RESET_ALL}")
+        return
+
+    # Check for random events before proceeding
+    if RandomEvent.check_for_event(server) is False:
         return
 
     print(f"\n{Fore.BLUE}[+] Attempting to hack {server['name']} bank account...{Style.RESET_ALL}")
@@ -36,7 +41,7 @@ def execute_hack_command():
         return
 
     # Normal hack logic for non-tutorial
-    if random.randint(1, 100) <= 70: 
+    if random.randint(1, 100) <= 80:  # Increased from 70% to 80% success rate
         player.add_money(stolen_amount)
         server["money"] -= stolen_amount
         print(f"{Fore.GREEN}💰 Success! Stole ${stolen_amount} from {server['name']}.{Style.RESET_ALL}")
