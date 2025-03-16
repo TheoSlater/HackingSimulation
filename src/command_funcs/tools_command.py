@@ -17,5 +17,6 @@ def execute_buy_command(tool_name):
     if success:
         print(f"✅ Successfully purchased {tool_name}")
         print(f"💰 Remaining balance: ${get_balance()}")
-        return
-    print("❌ Failed to purchase tool. Insufficient funds or invalid tool name.")
+        return success
+    else:
+        print("❌ Failed to purchase tool. Insufficient funds or invalid tool name.")

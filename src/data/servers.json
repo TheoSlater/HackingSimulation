@@ -4,10 +4,27 @@
     "security": 2,
     "password": "admin123",
     "money": 5000,
+    "ports": {},
     "files": {
       "report.txt": "Confidential report on system vulnerabilities.",
       "admin_creds.txt": "Username: admin\nPassword: 1234",
       "junk.log": "System logs and useless data."
+    },
+    "firewall": {
+      "enabled": true,
+      "strength": 3,
+      "attempts": 0
+    },
+    "auth_type": "password",
+    "sensitive_data": {
+      "customer_records.csv": {
+        "description": "Customer database with credit card info",
+        "value": 5000
+      },
+      "source_code.zip": {
+        "description": "Proprietary software source code",
+        "value": 3000
+      }
     }
   },
   "192.168.1.20": {
@@ -15,9 +32,22 @@
     "security": 3,
     "password": "securepass",
     "money": 12000,
+    "ports": {},
     "files": {
       "customer_data.db": "Encrypted database of customers. Requires decryption key.",
       "secret_key.pem": "PRIVATE KEY - DO NOT SHARE"
+    },
+    "firewall": {
+      "enabled": false,
+      "strength": 4,
+      "attempts": 0
+    },
+    "auth_type": "ssh_key",
+    "sensitive_data": {
+      "trade_secrets.doc": {
+        "description": "Corporate trade secrets",
+        "value": 8000
+      }
     }
   }
 }

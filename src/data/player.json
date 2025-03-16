@@ -1,9 +1,8 @@
 {
-    "money": 16865,
+    "money": 1000000013000,
     "tools": [
-        "faster_bruteforce",
-        "stealth_mode"
+        "ssh_cracker"
     ],
-    "xp": 220,
+    "xp": 1095,
     "wanted_level": 0
 }

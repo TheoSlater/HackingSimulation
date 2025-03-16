@@ -73,6 +73,8 @@ def gain_xp(amount):
 
 def increase_wanted_level():
     """Increases wanted level when detected."""
+    player_data = load_player()  # Reload fresh data
     player_data["wanted_level"] += 1
     save_player(player_data)
     print(f"🚨 Wanted Level: {player_data['wanted_level']}")
+

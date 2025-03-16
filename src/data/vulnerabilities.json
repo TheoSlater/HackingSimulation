@@ -1,0 +1,62 @@
+{
+  "22": {
+    "service": "SSH",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2020-14145",
+        "description": "Client Information Leak",
+        "version": "OpenSSH 7.6"
+      },
+      {
+        "cve": "CVE-2016-6515",
+        "description": "DoS via long password string",
+        "version": "OpenSSH 7.2"
+      }
+    ]
+  },
+  "80": {
+    "service": "HTTP",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2021-44790",
+        "description": "Buffer Overflow Vulnerability",
+        "version": "Apache 2.4.29"
+      },
+      {
+        "cve": "CVE-2021-41773",
+        "description": "Path Traversal Vulnerability",
+        "version": "Apache 2.4.49"
+      }
+    ]
+  },
+  "3306": {
+    "service": "MySQL",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2020-14539",
+        "description": "Server Access Validation",
+        "version": "MySQL 5.7.32"
+      }
+    ]
+  },
+  "21": {
+    "service": "FTP",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2019-5418",
+        "description": "Directory Traversal",
+        "version": "vsftpd 3.0.3"
+      }
+    ]
+  },
+  "445": {
+    "service": "SMB",
+    "vulnerabilities": [
+      {
+        "cve": "CVE-2017-0144",
+        "description": "Remote Code Execution",
+        "version": "SMBv1"
+      }
+    ]
+  }
+}
