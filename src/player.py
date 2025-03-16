@@ -8,7 +8,8 @@ data_path = os.path.join(os.path.dirname(__file__), "./data/player.json")
 DEFAULT_PLAYER = {
     "money": 500,
     "tools": [],
-    "xp": 0
+    "xp": 0,
+    "wanted_level": 0
 }
 
 def save_player(data):
@@ -69,3 +70,9 @@ def gain_xp(amount):
     player_data["xp"] += amount
     save_player(player_data)
     print(f"✨ Gained {amount} XP!")
+
+def increase_wanted_level():
+    """Increases wanted level when detected."""
+    player_data["wanted_level"] += 1
+    save_player(player_data)
+    print(f"🚨 Wanted Level: {player_data['wanted_level']}")

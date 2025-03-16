@@ -13,6 +13,7 @@ from command_funcs import (
     execute_buy_command,
     execute_hack_command
 )
+from command_funcs.credit_card_fraud import steal_card_details
 
 # Command definitions with their usage patterns
 COMMANDS = {
@@ -24,6 +25,7 @@ COMMANDS = {
     "open": (execute_open_command, "<filename>"),
     "tools": (execute_tools_command, None),
     "buy": (execute_buy_command, "<tool_name>"),
+    "steal-cc": (steal_card_details, None),
 }
 
 SUDO_COMMANDS = {

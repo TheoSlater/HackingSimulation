@@ -19,11 +19,10 @@ servers = load_servers()
 current_server = None
 
 def list_servers(level):
-    """ List available servers. Level 1 shows names, Level 2 shows IPs and security. """
     print(f"\n{Fore.CYAN}🌐 Available Servers:{Style.RESET_ALL}")
     for ip, server in servers.items():
         if level == 1:
-            print(f"- {server['name']}")
+            print(f"- {server['name']} ({ip})") 
         else:
             security_color = Fore.GREEN if server['security'] <= 3 else Fore.YELLOW if server['security'] <= 6 else Fore.RED
             print(f"- {server['name']} ({ip}) | Security Level: {security_color}{server['security']}{Style.RESET_ALL}")
@@ -38,7 +37,7 @@ def connect_to_server(identifier):
         return False
         
     for ip, server in servers.items():
-        if identifier.lower() in (ip.lower(), server["name"].lower()):
+        if identifier.lower() == ip.lower() or identifier.lower() == server["name"].lower():
             current_server = server.copy()  # Copy server data to avoid modifying original
             current_server["ip"] = ip  # Store the IP inside the server data
             print(f"{Fore.GREEN}🔗 Connected to {server['name']} ({ip}){Style.RESET_ALL}")

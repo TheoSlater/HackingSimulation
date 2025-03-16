@@ -1,5 +1,9 @@
 {
-  "money": 0,
-  "tools": ["faster_bruteforce"],
-  "xp": 0
+    "money": 16865,
+    "tools": [
+        "faster_bruteforce",
+        "stealth_mode"
+    ],
+    "xp": 220,
+    "wanted_level": 0
 }

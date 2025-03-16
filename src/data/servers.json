@@ -16,7 +16,7 @@
     "password": "securepass",
     "money": 12000,
     "files": {
-      "customer_data.db": "Encrypted database of customers.",
+      "customer_data.db": "Encrypted database of customers. Requires decryption key.",
       "secret_key.pem": "PRIVATE KEY - DO NOT SHARE"
     }
   }

@@ -79,7 +79,7 @@ def exploit_server():
         return
 
     # Lower exploit chance to make it slightly harder
-    exploit_chance = 40  
+    exploit_chance = max(5, 50 - server.get("security", 1) * 2) 
     if random.randint(1, 100) <= exploit_chance:
         print(f"[+] Exploit found! Root access granted to {server.get('name', 'Unknown')} ({server.get('ip', 'Unknown IP')})")
         server["root_access"] = True  # Grant root access
