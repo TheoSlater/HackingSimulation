@@ -1,0 +1,21 @@
+{
+  "192.168.1.10": {
+    "name": "AlphaNet",
+    "security": 2,
+    "password": "admin123",
+    "files": {
+      "report.txt": "Confidential report on system vulnerabilities.",
+      "admin_creds.txt": "Username: admin\nPassword: 1234",
+      "junk.log": "System logs and useless data."
+    }
+  },
+  "192.168.1.20": {
+    "name": "BetaCorp",
+    "security": 3,
+    "password": "securepass",
+    "files": {
+      "customer_data.db": "Encrypted database of customers.",
+      "secret_key.pem": "PRIVATE KEY - DO NOT SHARE"
+    }
+  }
+}
