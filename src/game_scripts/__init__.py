@@ -15,6 +15,7 @@ from command_funcs import (
     execute_hack_command
 )
 from hacking import check_root_access, brute_force_attack, exploit_service, exploit_server, crack_ssh_key
+from data.server_data import SERVERS  # Add this import
 
 class CustomScript:
     def __init__(self):
@@ -84,3 +85,10 @@ class CustomScript:
     def wait(self, seconds):
         """Safe wrapper for time.sleep"""
         time.sleep(min(seconds, 5))  # Cap at 5 seconds for safety
+
+    def get_server_by_name(self, name):
+        """Helper to find server by name"""
+        for ip, server in SERVERS.items():
+            if server["name"].lower() == name.lower():
+                return server
+        return None

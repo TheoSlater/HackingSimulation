@@ -26,6 +26,7 @@ def execute_firewall_scan():
     strength_color = Fore.GREEN if strength <= 3 else Fore.YELLOW if strength <= 6 else Fore.RED
     print(f"Firewall Strength: {strength_color}{strength}/10{Style.RESET_ALL}")
     print(f"Failed Attempts: {attempts}")
+    print(f"{Fore.YELLOW}Note: Exploits can still work through firewalls but have reduced success rates.{Style.RESET_ALL}")
 
 def execute_firewall_bypass():
     """Attempt to bypass the server's firewall"""
@@ -34,8 +35,8 @@ def execute_firewall_bypass():
         print(f"{Fore.RED}❌ Not connected to any server.{Style.RESET_ALL}")
         return
 
-    # Always succeed if tutorial not completed
-    if not player.player_data.get("tutorial_complete", False):
+    # Always succeed if tutorial is not complete
+    if not player.PLAYER.tutorial_complete:
         print(f"{Fore.GREEN}✓ Firewall successfully bypassed!{Style.RESET_ALL}")
         server["firewall"]["enabled"] = False
         player.gain_xp(25)

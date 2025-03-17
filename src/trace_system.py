@@ -45,14 +45,13 @@ class TraceSystem:
         print(f"\n{Fore.RED}🚨 TRACED! Connection detected by {server['name']}!{Style.RESET_ALL}")
         
         # Penalties
-        money_loss = int(player.get_balance() * 0.3)  # Lose 30% of money
+        money_loss = int(player.get_balance() * 0.3)
         player.deduct_money(money_loss)
         print(f"{Fore.RED}💸 Lost ${money_loss} in trace evasion!{Style.RESET_ALL}")
         
         if player.has_tool("stealth_mode"):
             print(f"{Fore.RED}🛠️ Stealth mode tool was confiscated!{Style.RESET_ALL}")
-            player.player_data["tools"].remove("stealth_mode")
-            player.save_player(player.player_data)
+            player.PLAYER.tools.remove("stealth_mode")  # Direct modification of tools
         
         disconnect()
         player.increase_wanted_level()

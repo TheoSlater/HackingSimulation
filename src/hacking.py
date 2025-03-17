@@ -8,10 +8,10 @@ import os
 from random_events import RandomEvent
 
 def check_firewall(server):
-    """Check if server has an active firewall"""
+    """Check if server has an active firewall and return firewall state"""
     firewall = server.get("firewall", {})
     if firewall.get("enabled", False):
-        print(f"{Fore.RED}❌ Access blocked by firewall. Use 'firewall-scan' and 'firewall-bypass' first.{Style.RESET_ALL}")
+        print(f"{Fore.YELLOW}⚠️ Warning: Active firewall detected. Reduced success rate.{Style.RESET_ALL}")
         return True
     return False
 
@@ -164,7 +164,7 @@ def crack_ssh_key(server):
 
 def exploit_service(server, port):
     """Attempt to exploit a specific service port"""
-    if check_root_access(server) or check_firewall(server):
+    if check_root_access(server):
         return
 
     # Check for random events before proceeding
@@ -172,7 +172,7 @@ def exploit_service(server, port):
         return
 
     # Always succeed if tutorial not completed
-    if not player.player_data.get("tutorial_complete", False):
+    if not player.PLAYER.tutorial_complete:  # Changed from player_data to PLAYER
         print(f"{Fore.GREEN}[+] Successfully exploited server!{Style.RESET_ALL}")
         server["root_access"] = True
         player.gain_xp(50)
@@ -193,12 +193,15 @@ def exploit_service(server, port):
     print(f"\n{Fore.CYAN}[*] Initiating exploit chain on {service['name']} ({service.get('version', 'unknown')}):{Style.RESET_ALL}")
     
     # Try multi-stage exploit chain
+    # Reduce success chance if firewall is active
+    firewall_penalty = 0.5 if server.get("firewall", {}).get("enabled", False) else 1.0
+    
     stages = [
-        ("Fingerprinting service", 0.95),        # Was 0.9
-        ("Checking version compatibility", 0.95), # Was 0.95
-        ("Building exploit payload", 0.9),        # Was 0.8 - Significantly increased
-        ("Injecting shellcode", 0.85),           # Was 0.7 - Significantly increased
-        ("Attempting privilege escalation", 0.8)  # Was 0.6 - Significantly increased
+        ("Fingerprinting service", 0.95 * firewall_penalty),
+        ("Checking version compatibility", 0.95 * firewall_penalty),
+        ("Building exploit payload", 0.9 * firewall_penalty),
+        ("Injecting shellcode", 0.85 * firewall_penalty),
+        ("Attempting privilege escalation", 0.8 * firewall_penalty)
     ]
 
     current_success = 1.0

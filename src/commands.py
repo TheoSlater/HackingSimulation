@@ -40,16 +40,15 @@ COMMANDS = {
     "malware": (execute_malware_list, None),
     "malware-status": (execute_malware_status, None),
     "malware-deploy": (execute_malware_deploy, "<type>"),
-    "hack": (execute_hack_command, None),  # Move hack command to regular commands
+    "hack": (execute_hack_command, None),
     "touch": (execute_touch_command, "<filename>"),
-    "run": (execute_run_script_command, "<filename>"),
+    "run": (execute_run_script_command, "<filename>")
 }
 
 SUDO_COMMANDS = {
     "brute-force": execute_brute_force_command,
     "exploit": execute_exploit_command,
     "crack-ssh": execute_crack_ssh_command
-    # Removed hack from here since it's now a regular command
 }
 
 SPECIAL_COMMANDS = {

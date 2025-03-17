@@ -7,6 +7,8 @@ from malware import update_all_servers_malware
 import time
 from tutorial import run_tutorial
 from commands import COMMANDS, SUDO_COMMANDS, SPECIAL_COMMANDS
+from data.server_data import SERVERS
+from data.player_data import PLAYER
 
 history = []
 
@@ -37,20 +39,28 @@ def get_prompt():
 def fake_terminal():
     print(f"{Fore.CYAN}Welcome to HackingSim Terminal{Style.RESET_ALL}")
     
-    # Check if tutorial needs to be run
-    if not player.player_data.get("tutorial_complete", False):
+    if not player.PLAYER.tutorial_complete:
         run_tutorial()
-    
-    print(f"{Fore.YELLOW}Type 'help' for available commands{Style.RESET_ALL}")
+    else:
+        print(f"{Fore.YELLOW}Type 'help' for available commands{Style.RESET_ALL}")
     
     last_malware_check = time.time()
+    last_save = time.time()
     
     while True:
         try:
+            current_time = time.time()
+            
             # Check malware income every minute
-            if time.time() - last_malware_check >= 60:
-                update_all_servers_malware(servers.servers)
-                last_malware_check = time.time()
+            if current_time - last_malware_check >= 60:
+                update_all_servers_malware(SERVERS)
+                last_malware_check = current_time
+
+            # Auto-save every 5 minutes
+            if current_time - last_save >= 300:
+                PLAYER.save_game()
+                print(f"{Fore.CYAN}🔄 Game auto-saved{Style.RESET_ALL}")
+                last_save = current_time
 
             command = input(get_prompt()).strip().lower()
             

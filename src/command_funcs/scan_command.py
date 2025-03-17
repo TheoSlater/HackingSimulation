@@ -25,6 +25,10 @@ def execute_scan_command(level):
             print(f"{Fore.RED}Not connected to any server.{Style.RESET_ALL}")
             return
         
+        if server.get("status", "online") != "online":
+            print(f"{Fore.RED}❌ Server is {server['status'].upper()}{Style.RESET_ALL}")
+            return
+            
         print(f"\n{Fore.CYAN}[*] Scanning {server['ip']}...{Style.RESET_ALL}")
         time.sleep(1)
         

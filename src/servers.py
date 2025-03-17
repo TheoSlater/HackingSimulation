@@ -3,6 +3,7 @@ import os
 import random
 from colorama import Fore, Style
 from ssh_generator import generate_ssh_key, generate_key_fingerprint
+from data.server_data import SERVERS, current_server
 
 # Paths
 data_path = os.path.join(os.path.dirname(__file__), "./data/servers.json")
@@ -45,71 +46,71 @@ def assign_random_vulnerabilities(server):
                     "vulnerabilities": selected_vulns
                 }
 
-def load_servers():
-    """Load servers and randomly assign vulnerabilities"""
-    if os.path.exists(data_path):
-        with open(data_path, "r") as f:
-            servers = json.load(f)
-            # Assign random vulnerabilities to each server
-            for server in servers.values():
-                assign_random_vulnerabilities(server)
-                if server.get("auth_type") == "ssh_key":
-                    server["ssh_key"] = {
-                        "private_key": generate_ssh_key(),
-                        "fingerprint": generate_key_fingerprint()
-                    }
-            return servers
-    else:
-        print(f"{Fore.RED}❌ Error: servers.json not found.{Style.RESET_ALL}")
-        return {}
+# Update current_server handling to use the one from server_data
+from data.server_data import current_server as global_current_server
 
-# Load servers at startup
-servers = load_servers()
-current_server = None
+def get_current_server():
+    return global_current_server
 
 def list_servers(level):
+    """List all servers and their details"""
     print(f"\n{Fore.CYAN}🌐 Available Servers:{Style.RESET_ALL}")
-    for ip, server in servers.items():
+    for ip, server in SERVERS.items():
+        status = server.get("status", "online")
+        name = server['name']
+        status_color = {
+            "online": Fore.GREEN,
+            "offline": Fore.RED,
+            "crashed": Fore.RED,
+            "overloaded": Fore.RED
+        }.get(status, Fore.YELLOW)
+        
+        server_str = f"- {name} ({ip})"
+        if status != "online":
+            server_str = f"- ~~{name} ({ip})~~ [{status_color}{status.upper()}{Style.RESET_ALL}]"
+
         if level == 1:
-            print(f"- {server['name']} ({ip})") 
+            print(server_str)
         else:
-            security_color = Fore.GREEN if server['security'] <= 3 else Fore.YELLOW if server['security'] <= 6 else Fore.RED
-            print(f"- {server['name']} ({ip}) | Security Level: {security_color}{server['security']}{Style.RESET_ALL}")
+            security_level = server.get('security', 1)  # Use get() with default
+            security_color = Fore.GREEN if security_level <= 3 else Fore.YELLOW if security_level <= 6 else Fore.RED
+            print(f"{server_str} | Security Level: {security_color}{security_level}{Style.RESET_ALL}")
 
 def connect_to_server(identifier):
     """ Connect to a server by name or IP. """
-    global current_server
+    global global_current_server
     
     # Check if already connected
-    if current_server:
-        print(f"{Fore.RED}❌ Already connected to {current_server['name']}. Please disconnect first.{Style.RESET_ALL}")
+    if global_current_server:
+        print(f"{Fore.RED}❌ Already connected to {global_current_server['name']}. Please disconnect first.{Style.RESET_ALL}")
         return False
         
-    for ip, server in servers.items():
+    for ip, server in SERVERS.items():
         if identifier.lower() == ip.lower() or identifier.lower() == server["name"].lower():
-            current_server = server.copy()  # Copy server data to avoid modifying original
-            current_server["ip"] = ip  # Store the IP inside the server data
+            if server.get("status", "online") != "online":
+                print(f"{Fore.RED}❌ Cannot connect: Server is {server['status']}{Style.RESET_ALL}")
+                return False
+                
+            global_current_server = server  # Changed this line to directly assign server instead of current_server["ip"] = ip
+            global_current_server["ip"] = ip  # Add IP after assignment
             print(f"{Fore.GREEN}🔗 Connected to {server['name']} ({ip}){Style.RESET_ALL}")
             return True
+    
     print(f"{Fore.RED}❌ Server not found.{Style.RESET_ALL}")
     return False
 
 def disconnect():
     """ Disconnect from the current server. """
-    global current_server
-    if current_server:
-        print(f"{Fore.YELLOW}🔌 Disconnected from {current_server['name']}{Style.RESET_ALL}")
-        current_server = None
+    global global_current_server
+    if global_current_server:
+        print(f"{Fore.YELLOW}🔌 Disconnected from {global_current_server['name']}{Style.RESET_ALL}")
+        global_current_server = None
     else:
         print(f"{Fore.RED}❌ Not connected to any server.{Style.RESET_ALL}")
 
-def get_current_server():
-    """ Get the currently connected server. """
-    return current_server
-
 def is_connected():
     """ Check if currently connected to a server. """
-    return current_server is not None
+    return global_current_server is not None
 
 def scan_ports(server):
     """Scan server ports and return open ports with their services"""
@@ -136,3 +137,12 @@ def enumerate_services(server):
                 services.append(f"   - CVE: {vuln['cve']}")
                 services.append(f"   - Description: {vuln['description']}")
     return "\n".join(services) if services else "No vulnerable services found."
+
+def set_server_status(server, status):
+    """Change server status and handle disconnection"""
+    if server and status in ["online", "offline", "crashed", "overloaded"]:
+        server["status"] = status
+        if status != "online":
+            disconnect()
+        return True
+    return False

@@ -6,6 +6,7 @@ from command_executor import execute_command_with_output
 tutorial_active = False
 
 def run_tutorial():
+    """Run the interactive tutorial"""
     from commands import COMMANDS, SUDO_COMMANDS, SPECIAL_COMMANDS 
     global tutorial_active
     tutorial_active = True
@@ -42,7 +43,7 @@ def run_tutorial():
     print("You now know the basics of hacking servers!")
     print("Type 'help' anytime to see all available commands.")
     
-    # Mark tutorial as complete
-    player.player_data["tutorial_complete"] = True
-    player.save_player(player.player_data)
+    # Mark tutorial as complete and save state
+    player.PLAYER.tutorial_complete = True
+    player.PLAYER.save_game()  # Add this line to save the state
 

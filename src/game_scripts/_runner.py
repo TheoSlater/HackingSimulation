@@ -1,4 +1,5 @@
-
+# DO NOT TOUCH THIS FILE
+# RUNS SCRIPTS FROM game_scripts DIRECTORY IN A SEPERATE WINDOW
 import sys
 import os
 # Add src directory to Python path

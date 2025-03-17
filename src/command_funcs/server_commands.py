@@ -1,5 +1,7 @@
+import random
+import time
 import player
-from servers import get_current_server
+from servers import disconnect, get_current_server
 from colorama import Fore, Style
 from hacking import check_firewall, brute_force_attack, exploit_service, exploit_server, crack_ssh_key
 from tutorial import tutorial_active

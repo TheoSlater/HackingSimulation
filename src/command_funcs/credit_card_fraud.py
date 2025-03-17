@@ -43,12 +43,7 @@ def steal_card_details():
         print("❌ Failed to steal any card details. Try again later!")
 
 def increase_wanted_level():
-    player_data = player.load_player()
-    player_data["wanted_level"] = player_data.get("wanted_level", 0) + 1
-    player.save_player(player_data)
-
-    if player_data["wanted_level"] >= 5:
-        print("🚔 The authorities are closing in! Be careful!")
+    player.increase_wanted_level()
 
 def get_wanted_level():
-    return player.load_player().get("wanted_level", 0)
+    return player.get_wanted_level()
